@@ -22,35 +22,24 @@ The RAG pipeline embeds user queries using all-mpnet-base-v2, retrieves the top 
 
 https://colab.research.google.com/drive/11p6B6drkzJfkChaPGBiOOS9vZCLbsxfq?usp=sharing
 
-Overall Flow
+## Overall Flow
 
-Wikipedia Dumps
-↓
-Extraction & Cleaning
-↓
-Chunking
-↓
-Embedding Generation
-↓
-FAISS Vector Index
-↓
-──────────────────
-Retrieval
-──────────────────
-User Query
-↓
-Query Embedding
-↓
-Semantic Search (FAISS)
-↓
-Cross-Encoder Reranking
-↓
-Top-k Context
-↓
-──────────────────
-Generation
-──────────────────
-Mistral 7B
-↓
-Grounded Answer
+```mermaid
+flowchart TD
+    A[Wikipedia Dumps] --> B[Extraction & Cleaning]
+    B --> C[Document Chunking]
+    C --> D[JSONL Corpus]
+    D --> E[Embedding Generation]
+    E --> F[FAISS Vector Index + Metadata]
+
+    F --> G[User Query]
+    G --> H[Query Embedding]
+    H --> I[FAISS Retrieval Top 20]
+    I --> J[Cross-Encoder Reranking]
+    J --> K[Top 5 Context Chunks]
+
+    K --> L[Prompt Construction]
+    L --> M[Mistral 7B Instruct]
+    M --> N[Generated Answer]
+```
 
